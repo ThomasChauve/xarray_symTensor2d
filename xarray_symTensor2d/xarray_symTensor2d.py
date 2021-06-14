@@ -34,7 +34,7 @@ class sT(object):
 
         deq=2/3*deq**2
         deq=np.nansum(deq,axis=-1)
-        deq[np.isnan(self._obj[...,0])]=np.nan
+        #deq[np.isnan(self._obj[...,0])]=np.nan
         
         if lognorm:
             med=np.nanmedian(deq,axis=(-1, -2))
