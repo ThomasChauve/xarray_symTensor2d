@@ -21,20 +21,12 @@ class sT(object):
         '''
         Compute the equivalent deforamtion of Von Mises (https://en.wikipedia.org/wiki/Infinitesimal_strain_theory)
 
-        :return eqVM: (2./3.e^d_ij.e^d_ij)**0.5 with e^d=e-1/3*tr(e)*I
+        :return eqVM: (2./3.e_ij.e_ij)**0.5
         :rtype eqVM: xr.DataArray
         '''
-
-        deq=np.array(self._obj)
-        tr=np.nanmean(np.array(self._obj[...,0:3]),axis=-1)
-
-        deq[...,0]=deq[...,0]-tr
-        deq[...,1]=deq[...,1]-tr
-        deq[...,2]=deq[...,2]-tr
-
-        deq=2/3*deq**2
-        deq=np.nansum(deq,axis=-1)
-        #deq[np.isnan(self._obj[...,0])]=np.nan
+        
+        deq=2/3*(np.nansum(self._obj**2,axis=-1)+np.nansum(self._obj[...,3::]**2,axis=-1))**.5
+        
         
         if lognorm:
             med=np.nanmedian(deq,axis=(-1, -2))
